@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form;
+namespace BlogBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,12 +19,12 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\User'
+            'data_class' => 'BlogBundle\Entity\User'
         ));
     }
 
     public function getName()
     {
-        return 'app_bundle_user_type';
+        return 'blog_bundle_user_type';
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace BlogBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="BlogBundle\Repository\UserRepository")
  * @ORM\Table(name="user")
  */
 class User
