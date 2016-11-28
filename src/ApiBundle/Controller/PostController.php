@@ -12,6 +12,22 @@ class PostController extends AbstractJsonController
     /**
      * @ApiDoc(
      *     resource=true,
+     *     description="Show list of blog posts",
+     *     statusCodes = {
+     *          200 = "OK"
+     *     },
+     *     section="Blog Post"
+     * )
+     * @Rest\Get("post", name="post_get")
+     */
+    public function getPostAction()
+    {
+        return $this->createSuccessfulResponse([]);
+    }
+
+    /**
+     * @ApiDoc(
+     *     resource=true,
      *     description="Create new blog post",
      *     parameters={
      *         {"name"="post_title", "dataType"="string", "required"=true, "description"="Post title"},
@@ -22,7 +38,7 @@ class PostController extends AbstractJsonController
      *     },
      *     section="Blog Post"
      * )
-     * @Rest\Post("post/create", name="post_create")
+     * @Rest\Post("post", name="post_create")
      */
     public function createPostAction(Request $request)
     {
@@ -39,7 +55,33 @@ class PostController extends AbstractJsonController
     /**
      * @ApiDoc(
      *     resource=true,
-     *     description="Remove blog post with id",
+     *     description="DELETE blog post with id",
+     *     requirements={
+     *          {
+     *              "name"="id",
+     *              "dataType"="integer",
+     *              "requirement"="\d+",
+     *              "required"=true,
+     *              "description"="post id to remove"
+     *          }
+     *     },
+     *     statusCodes = {
+     *         204 = "Success - No content",
+     *         500 = "Error - Internal"
+     *     },
+     *     section="Blog Post"
+     * )
+     * @Rest\Delete("post/{id}", name="post_delete")
+     */
+    public function deletePostAction(Request $request, $id)
+    {
+        return $this->createSuccessfulResponse([]);
+    }
+
+    /**
+     * @ApiDoc(
+     *     resource=true,
+     *     description="PUT blog post with id",
      *     requirements={
      *          {
      *              "name"="id",
@@ -50,22 +92,47 @@ class PostController extends AbstractJsonController
      *          }
      *     },
      *     parameters={
-     *         {"name"="title", "dataType"="string", "required"=true, "description"="post title"},
+     *         {"name"="post_title", "dataType"="string", "required"=true, "description"="Post title"},
+     *         {"name"="post_description", "dataType"="string", "required"=true, "description"="Post title"},
+     *         {"name"="post_content", "dataType"="textarea", "required"=false, "description"="Post title"},
      *     },
      *     statusCodes = {
-     *         204 = "Success - No content",
-     *         500 = "Error - Internal"
      *     },
      *     section="Blog Post"
      * )
-     * @Rest\Delete("post/delete", name="post_delete")
+     * @Rest\Put("post/{id}", name="post_put")
      */
-    public function deletePostAction(Request $request)
+    public function putPostAction(Request $request, $id)
     {
-        var_dump($request->getContent());
-        var_dump($request->get('id'));
-        die;
+        return $this->createSuccessfulResponse([]);
+    }
 
+    /**
+     * @ApiDoc(
+     *     resource=true,
+     *     description="PATCH blog post with id",
+     *     requirements={
+     *          {
+     *              "name"="id",
+     *              "dataType"="integer",
+     *              "requirement"="\d+",
+     *              "required"=true,
+     *              "description"="post id to remove"
+     *          }
+     *     },
+     *     parameters={
+     *         {"name"="post_title", "dataType"="string", "required"=true, "description"="Post title"},
+     *         {"name"="post_description", "dataType"="string", "required"=true, "description"="Post title"},
+     *         {"name"="post_content", "dataType"="textarea", "required"=false, "description"="Post title"},
+     *     },
+     *     statusCodes = {
+     *     },
+     *     section="Blog Post"
+     * )
+     * @Rest\Patch("post/{id}", name="post_patch")
+     */
+    public function patchPostAction(Request $request, $id)
+    {
         return $this->createSuccessfulResponse([]);
     }
 
