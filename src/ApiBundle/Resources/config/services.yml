@@ -1,4 +1,2 @@
-services:
-#    api.example:
-#        class: ApiBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+imports:
+    - { resource: "services/applications.yml" }

@@ -1,0 +1,6 @@
+services:
+
+    blog.domain.posts:
+        class: BlogBundle\Domain\Posts
+        arguments:
+            - "@blog.repository.post_repository"

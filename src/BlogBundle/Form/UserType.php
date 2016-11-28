@@ -13,13 +13,13 @@ class UserType extends AbstractType
         $builder
             ->add('firstName')
             ->add('lastName')
-            ->add('userRole', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', array('required'=>false));
+            ->add('userRole', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', array('required' => false));
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BlogBundle\Entity\User'
+            'data_class' => 'BlogBundle\Entity\User',
         ));
     }
 

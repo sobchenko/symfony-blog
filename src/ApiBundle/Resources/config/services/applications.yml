@@ -1,0 +1,7 @@
+services:
+
+    blog.api.application.posts:
+        class: ApiBundle\Application\Posts
+        arguments:
+            - "@jms_serializer"
+            - "@blog.domain.posts"

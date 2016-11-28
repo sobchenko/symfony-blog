@@ -5,7 +5,7 @@ namespace BlogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Post
+ * Post.
  *
  * @ORM\Table(name="post")
  * @ORM\Entity(repositoryClass="BlogBundle\Repository\PostRepository")
@@ -42,9 +42,8 @@ class Post
      */
     private $postContent;
 
-
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -54,7 +53,7 @@ class Post
     }
 
     /**
-     * Set postTitle
+     * Set postTitle.
      *
      * @param string $postTitle
      *
@@ -68,7 +67,7 @@ class Post
     }
 
     /**
-     * Get postTitle
+     * Get postTitle.
      *
      * @return string
      */
@@ -78,7 +77,7 @@ class Post
     }
 
     /**
-     * Set postDescription
+     * Set postDescription.
      *
      * @param string $postDescription
      *
@@ -92,7 +91,7 @@ class Post
     }
 
     /**
-     * Get postDescription
+     * Get postDescription.
      *
      * @return string
      */
@@ -102,7 +101,7 @@ class Post
     }
 
     /**
-     * Set postContent
+     * Set postContent.
      *
      * @param string $postContent
      *
@@ -116,7 +115,7 @@ class Post
     }
 
     /**
-     * Get postContent
+     * Get postContent.
      *
      * @return string
      */
@@ -125,4 +124,3 @@ class Post
         return $this->postContent;
     }
 }
-

@@ -108,6 +108,4 @@ class User
     {
         $this->userRole = $userRole;
     }
-
-
 }

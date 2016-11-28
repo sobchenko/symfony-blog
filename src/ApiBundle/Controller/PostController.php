@@ -2,10 +2,9 @@
 
 namespace ApiBundle\Controller;
 
-use ApiBundle\Controller\AbstractJsonController;
+use ApiBundle\Application\Posts;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class PostController extends AbstractJsonController
@@ -15,7 +14,9 @@ class PostController extends AbstractJsonController
      *     resource=true,
      *     description="Create new blog post",
      *     parameters={
-     *         {"name"="title", "dataType"="string", "required"=true, "description"="post title"},
+     *         {"name"="post_title", "dataType"="string", "required"=true, "description"="Post title"},
+     *         {"name"="post_description", "dataType"="string", "required"=true, "description"="Post title"},
+     *         {"name"="post_content", "dataType"="textarea", "required"=false, "description"="Post title"},
      *     },
      *     statusCodes={
      *     },
@@ -25,7 +26,14 @@ class PostController extends AbstractJsonController
      */
     public function createPostAction(Request $request)
     {
-        return $this->returnSuccessResponse('OK');
+        try {
+            $service = $this->getPostService();
+            $service->createFromJson($request->getContent());
+
+            return $this->createSuccessfulResponse([], AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT);
+        } catch (\Exception $e) {
+            return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_INTERNAL_ERROR);
+        }
     }
 
     /**
@@ -57,6 +65,15 @@ class PostController extends AbstractJsonController
         var_dump($request->getContent());
         var_dump($request->get('id'));
         die;
-        return $this->returnSuccessResponse('Filed');
+
+        return $this->createSuccessfulResponse([]);
+    }
+
+    /**
+     * @return Posts
+     */
+    private function getPostService()
+    {
+        return $this->get('blog.api.application.posts');
     }
 }
