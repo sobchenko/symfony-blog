@@ -17,13 +17,29 @@ class PostController extends AbstractJsonController
      *     statusCodes = {
      *          200 = "OK"
      *     },
+     *     statusCodes = {
+     *         200 = "Success",
+     *         204 = "Success - No content",
+     *         500 = "Error - Internal"
+     *     },
      *     section="Blog Post"
      * )
-     * @Rest\Get("post", name="post_get")
+     * @Rest\Get("post", name="post_list")
      */
-    public function getPostAction()
+    public function listPostAction()
     {
-        return $this->createSuccessfulResponse([]);
+        try {
+            $service = $this->getPostService();
+            $statusCode = AbstractJsonController::HTTP_STATUS_CODE_OK;
+            $posts = $service->getAll();
+            if (empty($posts)) {
+                $statusCode = AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT;
+                $posts = [];
+            }
+            return $this->createSuccessfulResponse($posts, $statusCode);
+        } catch (\Exception $e) {
+            return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_INTERNAL_ERROR);
+        }
     }
 
     /**
@@ -46,13 +62,49 @@ class PostController extends AbstractJsonController
         try {
             $service = $this->getPostService();
             $service->createFromJson($request->getContent());
-
             return $this->createSuccessfulResponse([], AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT);
         } catch (\Exception $e) {
             return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_INTERNAL_ERROR);
         }
     }
 
+    /**
+     * @ApiDoc(
+     *     resource=true,
+     *     description="Get blog post with id",
+     *     requirements={
+     *          {
+     *              "name"="id",
+     *              "dataType"="integer",
+     *              "requirement"="\d+",
+     *              "required"=true,
+     *              "description"="post id"
+     *          }
+     *     },
+     *     statusCodes = {
+     *         200 = "Success",
+     *         204 = "Success - No content",
+     *         500 = "Error - Internal"
+     *     },
+     *     section="Blog Post"
+     * )
+     * @Rest\Get("post/{id}", name="post_get")
+     */
+    public function getPostAction($id)
+    {
+        try {
+            $service = $this->getPostService();
+            $statusCode = AbstractJsonController::HTTP_STATUS_CODE_OK;
+            $post = $service->getById($id);
+            if (empty($post)) {
+                $statusCode = AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT;
+                $post = [];
+            }
+            return $this->createSuccessfulResponse($post, $statusCode);
+        } catch (\Exception $e) {
+            return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_INTERNAL_ERROR);
+        }
+    }
     /**
      * @ApiDoc(
      *     resource=true,
@@ -63,7 +115,7 @@ class PostController extends AbstractJsonController
      *              "dataType"="integer",
      *              "requirement"="\d+",
      *              "required"=true,
-     *              "description"="post id to remove"
+     *              "description"="post id to delete"
      *          }
      *     },
      *     statusCodes = {
@@ -95,7 +147,7 @@ class PostController extends AbstractJsonController
      *              "dataType"="integer",
      *              "requirement"="\d+",
      *              "required"=true,
-     *              "description"="post id to remove"
+     *              "description"="post id to put"
      *          }
      *     },
      *     parameters={
@@ -124,7 +176,7 @@ class PostController extends AbstractJsonController
      *              "dataType"="integer",
      *              "requirement"="\d+",
      *              "required"=true,
-     *              "description"="post id to remove"
+     *              "description"="post id to putch"
      *          }
      *     },
      *     parameters={

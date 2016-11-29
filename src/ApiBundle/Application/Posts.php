@@ -39,6 +39,25 @@ class Posts extends AbstractApplication
     }
 
     /**
+     * @param $id
+     * @return Post
+     */
+    public function getById($id)
+    {
+        $service = $this->getService();
+        return $service->loadById($id);
+    }
+
+    /**
+     * @return array Post
+     */
+    public function getAll()
+    {
+        $service = $this->getService();
+        return $service->loadAll();
+    }
+
+    /**
      * @return string
      */
     protected function getEntityName()

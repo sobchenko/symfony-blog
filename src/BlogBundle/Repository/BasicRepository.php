@@ -36,4 +36,12 @@ class BasicRepository extends EntityRepository implements RepositoryInterface
     {
         return parent::find($entityId);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAll()
+    {
+        return parent::findAll();
+    }
 }

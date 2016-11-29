@@ -35,6 +35,7 @@ class Basic implements BasicInterface
         $this->getRepository()->remove($entity);
     }
 
+
     /**
      * @return RepositoryInterface
      */

@@ -2,15 +2,26 @@
 
 namespace BlogBundle\Domain;
 
-use BlogBundle\Entity\User;
+use BlogBundle\Entity\Post;
 use BlogBundle\Repository\PostRepository;
 
 class Posts extends Basic
 {
+
+    /**
+     * @return array    Post collection
+     */
+    public function loadAll()
+    {
+        /** @var PostRepository $repo */
+        $repo = $this->getRepository();
+        return $repo->findAll();
+    }
+
     /**
      * @param integer $id
      *
-     * @return User
+     * @return Post
      */
     public function loadById($id)
     {
