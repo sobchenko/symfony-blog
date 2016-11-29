@@ -5,6 +5,7 @@ namespace ApiBundle\Application;
 use BlogBundle\Entity\Post;
 use JMS\Serializer\Serializer;
 use BlogBundle\Domain\BasicInterface as BasicDomainInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Posts extends AbstractApplication
 {
@@ -21,6 +22,20 @@ class Posts extends AbstractApplication
         /** @var Post $entity */
         $entity = $this->deserialize($content);
         parent::save($entity);
+    }
+
+    /**
+     * @param $id
+     */
+    public function removeById($id)
+    {
+        try {
+            $service = $this->getService();
+            $entity = $service->loadById($id);
+            $service->remove($entity);
+        } catch (\Exception $e) {
+            // Do nothing
+        }
     }
 
     /**

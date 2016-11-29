@@ -28,4 +28,12 @@ class BasicRepository extends EntityRepository implements RepositoryInterface
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function find($entityId)
+    {
+        return parent::find($entityId);
+    }
 }

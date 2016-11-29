@@ -3,6 +3,7 @@
 namespace ApiBundle\Controller;
 
 use ApiBundle\Application\Posts;
+use BlogBundle\Entity\Post;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,9 +74,15 @@ class PostController extends AbstractJsonController
      * )
      * @Rest\Delete("post/{id}", name="post_delete")
      */
-    public function deletePostAction(Request $request, $id)
+    public function deletePostAction($id)
     {
-        return $this->createSuccessfulResponse([]);
+        try {
+            $service = $this->getPostService();
+            $service->removeById($id);
+            return $this->createSuccessfulResponse([]);
+        } catch (\Exception $e) {
+            return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_INTERNAL_ERROR);
+        }
     }
 
     /**
