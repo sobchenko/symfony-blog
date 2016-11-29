@@ -1,7 +1,7 @@
 blog_api:
     resource: "@ApiBundle/Controller/"
     type:     annotation
-    prefix:   /api/
+    prefix:   /
 
 blog:
     resource: "@BlogBundle/Controller/"
