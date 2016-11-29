@@ -45,9 +45,9 @@ class BasicRepository extends EntityRepository implements RepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function find($entityId)
+    public function find($entityId, $lockMode = null, $lockVersion = null)
     {
-        return parent::find($entityId);
+        return parent::find($entityId, $lockMode, $lockVersion);
     }
 
     /**

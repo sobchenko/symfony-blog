@@ -14,12 +14,9 @@ class PostController extends AbstractJsonController
     /**
      * @ApiDoc(
      *     resource=true,
-     *     description="Show list of blog posts",
+     *     description="Get collection of blog posts",
      *     statusCodes = {
-     *          200 = "OK"
-     *     },
-     *     statusCodes = {
-     *         200 = "Success",
+     *         200 = "OK"
      *         204 = "Success - No content",
      *         500 = "Error - Internal"
      *     },
@@ -94,18 +91,14 @@ class PostController extends AbstractJsonController
      *     section="Blog Post"
      * )
      *
-     * @Rest\Get("post/{id}", name="post_get")
+     * @Rest\Get("post/{id}", name="post_get", requirements={"id" = "\d+"})
      */
     public function getPostAction($id)
     {
         try {
-            $postId = (int) $id;
-            if ($postId == 0) {
-                throw new NotFoundHttpException('Post id cann\'t be empty');
-            }
             $service = $this->getPostService();
             $statusCode = AbstractJsonController::HTTP_STATUS_CODE_OK;
-            $post = $service->getById($postId);
+            $post = $service->getById($id);
             if (empty($post)) {
                 $statusCode = AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT;
                 $post = [];
@@ -139,15 +132,11 @@ class PostController extends AbstractJsonController
      *     },
      *     section="Blog Post"
      * )
-     * @Rest\Delete("post/{id}", name="post_delete")
+     * @Rest\Delete("post/{id}", name="post_delete", requirements={"id" = "\d+"})
      */
     public function deletePostAction($id)
     {
         try {
-            $postId = (int) $id;
-            if ($postId == 0) {
-                throw new NotFoundHttpException('Post id cann\'t be empty');
-            }
             $service = $this->getPostService();
             $service->removeById($id);
 
@@ -187,7 +176,7 @@ class PostController extends AbstractJsonController
      *     },
      *     section="Blog Post"
      * )
-     * @Rest\Put("post/{id}", name="post_put")
+     * @Rest\Put("post/{id}", name="post_put", requirements={"id" = "\d+"})
      */
     public function putPostAction(Request $request, $id)
     {
@@ -198,7 +187,7 @@ class PostController extends AbstractJsonController
             }
             $service = $this->getPostService();
             $statusCode = AbstractJsonController::HTTP_STATUS_CODE_OK;
-            $post = $service->getById($postId);
+            $post = $service->getById($id);
             if (empty($post)) {
                 $statusCode = AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT;
                 $post = [];
@@ -222,7 +211,7 @@ class PostController extends AbstractJsonController
      *              "dataType"="integer",
      *              "requirement"="\d+",
      *              "required"=true,
-     *              "description"="post id to putch"
+     *              "description"="post id to patch"
      *          }
      *     },
      *     parameters={
@@ -238,18 +227,14 @@ class PostController extends AbstractJsonController
      *     },
      *     section="Blog Post"
      * )
-     * @Rest\Patch("post/{id}", name="post_patch")
+     * @Rest\Patch("post/{id}", name="post_patch", requirements={"id" = "\d+"})
      */
     public function patchPostAction(Request $request, $id)
     {
         try {
-            $postId = (int) $id;
-            if ($postId == 0) {
-                throw new NotFoundHttpException('Post id cann\'t be empty');
-            }
             $service = $this->getPostService();
             $statusCode = AbstractJsonController::HTTP_STATUS_CODE_OK;
-            $post = $service->getById($postId);
+            $post = $service->getById($id);
             if (empty($post)) {
                 $statusCode = AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT;
                 $post = [];

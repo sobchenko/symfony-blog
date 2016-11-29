@@ -12,10 +12,10 @@ class Posts extends Basic
      */
     public function loadAll()
     {
-        /** @var PostRepository $repo */
-        $repo = $this->getRepository();
+        /** @var PostRepository $repository */
+        $repository = $this->getRepository();
 
-        return $repo->findAll();
+        return $repository->findAll();
     }
 
     /**
@@ -26,8 +26,8 @@ class Posts extends Basic
     public function loadById($id)
     {
         /** @var PostRepository $repo */
-        $repo = $this->getRepository();
+        $repository = $this->getRepository();
 
-        return $repo->find($id);
+        return $repository->find($id);
     }
 }

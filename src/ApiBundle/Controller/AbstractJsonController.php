@@ -3,8 +3,10 @@
 namespace ApiBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
+use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class AbstractJsonController extends FOSRestController
 {
@@ -18,9 +20,15 @@ class AbstractJsonController extends FOSRestController
 
     protected function createSuccessfulResponse($data, $statusCode = self::HTTP_STATUS_CODE_OK)
     {
-        return new JsonResponse(
-            $this->getSerializer()->serialize($data, 'json'),
-            $statusCode
+        $context = SerializationContext::create()
+            ->enableMaxDepthChecks()
+            ->setSerializeNull(true)
+        ;
+        $data = $this->getSerializer()->serialize($data, 'json', $context);
+        return new Response(
+            $data,
+            $statusCode,
+            [ 'Content-Type' => 'application/json' ]
         );
     }
 
