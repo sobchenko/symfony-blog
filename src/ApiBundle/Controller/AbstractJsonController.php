@@ -9,9 +9,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class AbstractJsonController extends FOSRestController
 {
     const HTTP_STATUS_CODE_OK = 200;
+    const HTTP_STATUS_CODE_CREATED = 201;
     const HTTP_STATUS_CODE_NO_CONTENT = 204;
     const HTTP_STATUS_CODE_BAD_REQUEST = 400;
     const HTTP_STATUS_CODE_NOT_FOUND = 404;
+    const HTTP_STATUS_CODE_GONE = 410;
     const HTTP_STATUS_CODE_INTERNAL_ERROR = 500;
 
     protected function createSuccessfulResponse($data, $statusCode = self::HTTP_STATUS_CODE_OK)

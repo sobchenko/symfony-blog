@@ -3,10 +3,11 @@
 namespace ApiBundle\Controller;
 
 use ApiBundle\Application\Posts;
-use BlogBundle\Entity\Post;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\GoneHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PostController extends AbstractJsonController
 {
@@ -47,11 +48,13 @@ class PostController extends AbstractJsonController
      *     resource=true,
      *     description="Create new blog post",
      *     parameters={
-     *         {"name"="post_title", "dataType"="string", "required"=true, "description"="Post title"},
-     *         {"name"="post_description", "dataType"="string", "required"=true, "description"="Post title"},
-     *         {"name"="post_content", "dataType"="textarea", "required"=false, "description"="Post title"},
+     *         {"name"="post_title", "dataType"="string", "required"=true, "description"="Post Title"},
+     *         {"name"="post_description", "dataType"="string", "required"=true, "description"="Post Shot Description"},
+     *         {"name"="post_content", "dataType"="textarea", "required"=false, "description"="Post Content"},
      *     },
-     *     statusCodes={
+     *     statusCodes = {
+     *         201 = "Successfully created",
+     *         500 = "Error - Internal"
      *     },
      *     section="Blog Post"
      * )
@@ -62,7 +65,7 @@ class PostController extends AbstractJsonController
         try {
             $service = $this->getPostService();
             $service->createFromJson($request->getContent());
-            return $this->createSuccessfulResponse([], AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT);
+            return $this->createSuccessfulResponse([], AbstractJsonController::HTTP_STATUS_CODE_CREATED);
         } catch (\Exception $e) {
             return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_INTERNAL_ERROR);
         }
@@ -120,6 +123,7 @@ class PostController extends AbstractJsonController
      *     },
      *     statusCodes = {
      *         204 = "Success - No content",
+     *         410 = "Error - Gone, post already deleted",
      *         500 = "Error - Internal"
      *     },
      *     section="Blog Post"
@@ -131,7 +135,11 @@ class PostController extends AbstractJsonController
         try {
             $service = $this->getPostService();
             $service->removeById($id);
-            return $this->createSuccessfulResponse([]);
+            return $this->createSuccessfulResponse([], AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT);
+        } catch (GoneHttpException $e) {
+            return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_GONE);
+        } catch (NotFoundHttpException $e) {
+            return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_NOT_FOUND);
         } catch (\Exception $e) {
             return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_INTERNAL_ERROR);
         }
@@ -151,9 +159,9 @@ class PostController extends AbstractJsonController
      *          }
      *     },
      *     parameters={
-     *         {"name"="post_title", "dataType"="string", "required"=true, "description"="Post title"},
-     *         {"name"="post_description", "dataType"="string", "required"=true, "description"="Post title"},
-     *         {"name"="post_content", "dataType"="textarea", "required"=false, "description"="Post title"},
+     *         {"name"="post_title", "dataType"="string", "required"=true, "description"="Post Title"},
+     *         {"name"="post_description", "dataType"="string", "required"=true, "description"="Post Shot Description"},
+     *         {"name"="post_content", "dataType"="textarea", "required"=false, "description"="Post Content"},
      *     },
      *     statusCodes = {
      *     },
@@ -180,9 +188,9 @@ class PostController extends AbstractJsonController
      *          }
      *     },
      *     parameters={
-     *         {"name"="post_title", "dataType"="string", "required"=true, "description"="Post title"},
-     *         {"name"="post_description", "dataType"="string", "required"=true, "description"="Post title"},
-     *         {"name"="post_content", "dataType"="textarea", "required"=false, "description"="Post title"},
+     *         {"name"="post_title", "dataType"="string", "required"=true, "description"="Post Title"},
+     *         {"name"="post_description", "dataType"="string", "required"=true, "description"="Post Shot Description"},
+     *         {"name"="post_content", "dataType"="textarea", "required"=false, "description"="Post Content"},
      *     },
      *     statusCodes = {
      *     },
