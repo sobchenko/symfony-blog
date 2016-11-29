@@ -15,4 +15,5 @@ interface ApplicationInterface
      * @param object $entity
      */
     public function save($entity);
+
 }

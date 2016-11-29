@@ -24,13 +24,6 @@ class Posts extends AbstractApplication
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function save($entity)
-    {
-    }
-
-    /**
      * @return string
      */
     protected function getEntityName()
