@@ -37,6 +37,7 @@ class PostController extends AbstractJsonController
                 $statusCode = AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT;
                 $posts = [];
             }
+
             return $this->createSuccessfulResponse($posts, $statusCode);
         } catch (\Exception $e) {
             return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_INTERNAL_ERROR);
@@ -65,6 +66,7 @@ class PostController extends AbstractJsonController
         try {
             $service = $this->getPostService();
             $service->createFromJson($request->getContent());
+
             return $this->createSuccessfulResponse([], AbstractJsonController::HTTP_STATUS_CODE_CREATED);
         } catch (\Exception $e) {
             return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_INTERNAL_ERROR);
@@ -91,19 +93,27 @@ class PostController extends AbstractJsonController
      *     },
      *     section="Blog Post"
      * )
+     *
      * @Rest\Get("post/{id}", name="post_get")
      */
     public function getPostAction($id)
     {
         try {
+            $postId = (int) $id;
+            if ($postId == 0) {
+                throw new NotFoundHttpException('Post id cann\'t be empty');
+            }
             $service = $this->getPostService();
             $statusCode = AbstractJsonController::HTTP_STATUS_CODE_OK;
-            $post = $service->getById($id);
+            $post = $service->getById($postId);
             if (empty($post)) {
                 $statusCode = AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT;
                 $post = [];
             }
+
             return $this->createSuccessfulResponse($post, $statusCode);
+        } catch (NotFoundHttpException $e) {
+            return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_NOT_FOUND);
         } catch (\Exception $e) {
             return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_INTERNAL_ERROR);
         }
@@ -123,6 +133,7 @@ class PostController extends AbstractJsonController
      *     },
      *     statusCodes = {
      *         204 = "Success - No content",
+     *         404 = "Error - Not found",
      *         410 = "Error - Gone, post already deleted",
      *         500 = "Error - Internal"
      *     },
@@ -133,8 +144,13 @@ class PostController extends AbstractJsonController
     public function deletePostAction($id)
     {
         try {
+            $postId = (int) $id;
+            if ($postId == 0) {
+                throw new NotFoundHttpException('Post id cann\'t be empty');
+            }
             $service = $this->getPostService();
             $service->removeById($id);
+
             return $this->createSuccessfulResponse([], AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT);
         } catch (GoneHttpException $e) {
             return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_GONE);
@@ -164,6 +180,10 @@ class PostController extends AbstractJsonController
      *         {"name"="post_content", "dataType"="textarea", "required"=false, "description"="Post Content"},
      *     },
      *     statusCodes = {
+     *         204 = "Success - No content",
+     *         404 = "Error - Not found",
+     *         410 = "Error - Gone, post already deleted",
+     *         500 = "Error - Internal"
      *     },
      *     section="Blog Post"
      * )
@@ -171,7 +191,25 @@ class PostController extends AbstractJsonController
      */
     public function putPostAction(Request $request, $id)
     {
-        return $this->createSuccessfulResponse([]);
+        try {
+            $postId = (int) $id;
+            if ($postId == 0) {
+                throw new NotFoundHttpException('Post id cann\'t be empty');
+            }
+            $service = $this->getPostService();
+            $statusCode = AbstractJsonController::HTTP_STATUS_CODE_OK;
+            $post = $service->getById($postId);
+            if (empty($post)) {
+                $statusCode = AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT;
+                $post = [];
+            }
+
+            return $this->createSuccessfulResponse($post, $statusCode);
+        } catch (NotFoundHttpException $e) {
+            return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_NOT_FOUND);
+        } catch (\Exception $e) {
+            return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_INTERNAL_ERROR);
+        }
     }
 
     /**
@@ -193,6 +231,10 @@ class PostController extends AbstractJsonController
      *         {"name"="post_content", "dataType"="textarea", "required"=false, "description"="Post Content"},
      *     },
      *     statusCodes = {
+     *         204 = "Success - No content",
+     *         404 = "Error - Not found",
+     *         410 = "Error - Gone, post already deleted",
+     *         500 = "Error - Internal"
      *     },
      *     section="Blog Post"
      * )
@@ -200,7 +242,25 @@ class PostController extends AbstractJsonController
      */
     public function patchPostAction(Request $request, $id)
     {
-        return $this->createSuccessfulResponse([]);
+        try {
+            $postId = (int) $id;
+            if ($postId == 0) {
+                throw new NotFoundHttpException('Post id cann\'t be empty');
+            }
+            $service = $this->getPostService();
+            $statusCode = AbstractJsonController::HTTP_STATUS_CODE_OK;
+            $post = $service->getById($postId);
+            if (empty($post)) {
+                $statusCode = AbstractJsonController::HTTP_STATUS_CODE_NO_CONTENT;
+                $post = [];
+            }
+
+            return $this->createSuccessfulResponse($post, $statusCode);
+        } catch (NotFoundHttpException $e) {
+            return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_NOT_FOUND);
+        } catch (\Exception $e) {
+            return $this->createFailedResponse($e, AbstractJsonController::HTTP_STATUS_CODE_INTERNAL_ERROR);
+        }
     }
 
     /**

@@ -7,19 +7,19 @@ use BlogBundle\Repository\PostRepository;
 
 class Posts extends Basic
 {
-
     /**
-     * @return array    Post collection
+     * @return array Post collection
      */
     public function loadAll()
     {
         /** @var PostRepository $repo */
         $repo = $this->getRepository();
+
         return $repo->findAll();
     }
 
     /**
-     * @param integer $id
+     * @param int $id
      *
      * @return Post
      */
@@ -27,6 +27,7 @@ class Posts extends Basic
     {
         /** @var PostRepository $repo */
         $repo = $this->getRepository();
+
         return $repo->find($id);
     }
 }
