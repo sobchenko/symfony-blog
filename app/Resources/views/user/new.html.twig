@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>New User</h1>
+    <a href="{{ path('users_list') }}">List of Users</a>
+    {{ include('user/_form.html.twig') }}
+    {{ data|upper }} <br>
+    Date now: {{ 'now'|date('Y-m-d') }}
+{% endblock %}

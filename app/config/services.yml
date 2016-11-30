@@ -1,5 +1,10 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
+
+imports:
+    - { resource: "@ApiBundle/Resources/config/services.yml" }
+    - { resource: "@BlogBundle/Resources/config/services.yml" }
+
 parameters:
 #    parameter_name: value
 

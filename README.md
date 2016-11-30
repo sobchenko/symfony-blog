@@ -3,6 +3,14 @@ Symfony - Blog
 
 A Symfony project created on November 20, 2016, 9:02 pm.
 
+####To start project from scratch use:
+* composer install
+* php app/console doctrine:database:create
+* php app/console doctrine:schema:create
+
+After initializing j
+
+---
 Possible blog structure:
 
 ###posts

@@ -1,0 +1,7 @@
+services:
+
+    blog.repository.post_repository:
+        class: BlogBundle\Repository\PostRepository
+        factory:  ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments:
+            - BlogBundle\Entity\Post
