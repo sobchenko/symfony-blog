@@ -248,17 +248,21 @@ class PostController extends AbstractJsonController
             if (empty($post)) {
                 throw new GoneHttpException("Resource with id:'{$id}' doesn't exist");
             }
-            // Based on assumption that existed entity is valid
-            $postNew = $service->createFromJson($request->getContent());
-            // TODO should work something like this but necessary to refactor bellow part
 
-            //validateProperty
-            if ($postNew->getPostTitle()) {
+            // TODO Case if incoming parameter is empty what to do?
+            /** @var Post $postNew */
+            $postNew = $service->createFromJson($request->getContent());
+
+            // TODO Necessary to refactor bellow part
+            if (!is_null($postNew->getPostTitle()) && ($post->getPostTitle() != $postNew->getPostTitle())) {
                 $post->setPostTitle($postNew->getPostTitle());
             }
-            $post->setPostContent($postNew->getPostContent());
-            $post->setPostDescription($postNew->getPostDescription());
-
+            if (!is_null($postNew->getPostDescription()) && ($post->getPostDescription() != $postNew->getPostDescription())) {
+                $post->setPostDescription($postNew->getPostDescription());
+            }
+            if (!is_null($postNew->getPostContent()) && ($post->getPostContent() != $postNew->getPostContent())) {
+                $post->setPostContent($postNew->getPostContent());
+            }
             $this->validate($post, $service);
             $service->save($post);
 
