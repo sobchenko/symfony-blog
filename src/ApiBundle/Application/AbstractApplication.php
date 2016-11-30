@@ -3,6 +3,7 @@
 namespace ApiBundle\Application;
 
 use BlogBundle\Domain\BasicInterface as BasicDomainInterface;
+use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\Serializer;
 
 abstract class AbstractApplication implements ApplicationInterface
@@ -45,13 +46,31 @@ abstract class AbstractApplication implements ApplicationInterface
     }
 
     /**
-     * @param $content
+     * Deserialize the data "on to" to the existing entity (if not empty) or create a new one;.
+     *
+     * @param $data
+     * @param object
      *
      * @return object
      */
-    protected function deserialize($content)
+    protected function deserialize($data, $entity = null)
     {
-        return $this->serializer->deserialize($content, $this->getEntityName(), 'json');
+        $context = new DeserializationContext();
+        if (!empty($entity)) {
+            $context->attributes->set('target', $entity);
+        }
+
+        return $this->serializer->deserialize($data, $this->getEntityName(), 'json', $context);
+    }
+
+    /**
+     * @param $content
+     *
+     * @return string
+     */
+    protected function serialize($content)
+    {
+        return $this->serializer->serialize($content, 'json');
     }
 
     /**

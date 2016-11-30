@@ -2,7 +2,6 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-    - { resource: "@ApiBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -63,8 +62,21 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+#NelmioApiDocBundle Configuration
 nelmio_api_doc:
     sandbox:
         body_format:
             formats: [ json ]
             default_format: json
+
+#FOSRestBundle Configuration
+fos_rest:
+    param_fetcher_listener: force
+    body_listener: true
+    format_listener: true
+    format_listener:
+        rules:
+            default:
+                fallback_format: json
+    routing_loader:
+        default_format: json

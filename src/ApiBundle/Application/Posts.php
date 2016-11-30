@@ -15,13 +15,28 @@ class Posts extends AbstractApplication
     }
 
     /**
-     * {@inheritdoc}
+     * Create new entity from JSON.
+     *
+     * @param string $data
+     *
+     * @return object
      */
-    public function createFromJson($content)
+    public function createFromJson($data)
     {
-        /** @var Post $entity */
-        $entity = $this->deserialize($content);
-        parent::save($entity);
+        return $this->deserialize($data);
+    }
+
+    /**
+     * Update existing entity from JSON.
+     *
+     * @param string $data
+     * @param $entity
+     *
+     * @return Post
+     */
+    public function updateFromJson($data, $entity)
+    {
+        return $this->deserialize($data, $entity);
     }
 
     /**
@@ -33,7 +48,7 @@ class Posts extends AbstractApplication
         $service = $this->getService();
         $entity = $service->loadById($id);
         if (empty($entity)) {
-            throw new GoneHttpException("Post with id: '{$id}' already deleted");
+            throw new GoneHttpException("Post with id: '{$id}' not exists");
         }
         $service->remove($entity);
     }
@@ -60,6 +75,16 @@ class Posts extends AbstractApplication
         $service = $this->getService();
 
         return $service->loadAll();
+    }
+
+    /**
+     * @param $errors
+     *
+     * @return string
+     */
+    public function handleErrors($errors)
+    {
+        return $this->serialize($errors);
     }
 
     /**

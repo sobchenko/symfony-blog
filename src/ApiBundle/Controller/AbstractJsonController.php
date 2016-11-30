@@ -15,6 +15,7 @@ class AbstractJsonController extends FOSRestController
     const HTTP_STATUS_CODE_NO_CONTENT = 204;
     const HTTP_STATUS_CODE_BAD_REQUEST = 400;
     const HTTP_STATUS_CODE_NOT_FOUND = 404;
+    const HTTP_STATUS_CODE_UNPROCESSABLE_ENTITY = 422;
     const HTTP_STATUS_CODE_GONE = 410;
     const HTTP_STATUS_CODE_INTERNAL_ERROR = 500;
 
@@ -25,10 +26,11 @@ class AbstractJsonController extends FOSRestController
             ->setSerializeNull(true)
         ;
         $data = $this->getSerializer()->serialize($data, 'json', $context);
+
         return new Response(
             $data,
             $statusCode,
-            [ 'Content-Type' => 'application/json' ]
+            ['Content-Type' => 'application/json']
         );
     }
 
